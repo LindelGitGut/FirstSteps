@@ -6,23 +6,31 @@ public class Main {
     public static void main(String[] args) {
 	// write your code here
 
-        int Zug = 0;
-        int Winner = -1;
-        int Spieler = 1;
-        int [] Spielebrett = new int [9];
-        for (int i = 0; i < Spielebrett.length; i++){
-            Spielebrett[i] = -1; }
+boolean RunningGame = true;
 
-        while(Winner == -1){
-            printBoard(Spielebrett);
-            doTurn(Spieler);
-            Spielebrett[playTurn()] = Spieler;
-            Winner = checkWinner(Spielebrett);
-            if (Winner == -1){Spieler = changeTurn(Spieler);}}
+        while (RunningGame == true) {
+            int Zug = 0;
+            int Winner = -1;
+            int Spieler = 1;
+            int[] Spielebrett = new int[9];
+            for (int i = 0; i < Spielebrett.length; i++) {
+                Spielebrett[i] = -1;
+            }
 
-        System.out.print("Spieler "+Spieler+". ");
+            while (Winner == -1) {
+                printBoard(Spielebrett);
+                doTurn(Spieler);
+                Spielebrett[playTurn(Spielebrett)] = Spieler;
+                Winner = checkWinner(Spielebrett);
+                if (Winner == -1) {
+                    Spieler = changeTurn(Spieler);
+                }
+            }
+            RunningGame = endGame(Spieler);
+            }
+        }
 
-    }
+
 
 
 
@@ -67,11 +75,13 @@ public class Main {
 
     //Methode zum ausfuehren des Spielzugs:
 
-    private static int playTurn (){
+    private static int playTurn (int [] Currentfield) {
         Scanner sc = new Scanner(System.in);
         int fieldnumber = sc.nextInt() - 1;
-        return fieldnumber;
-    }
+        int [] Currentfield1 = Currentfield;
+        if (Currentfield [fieldnumber] != 1 && Currentfield [fieldnumber] != 2) {
+         return fieldnumber;}
+        else {System.out.println("Falsche Eingabe!");return playTurn(Currentfield);}}
 
 
 
@@ -87,7 +97,7 @@ public class Main {
         if (Player == 1) {
             System.out.println("Spieler" + " " + Player + ". Sie sind dran!");
         } else if (Player == 2) {
-            System.out.println("Spieler" + Player + ". Sie sind dran!");
+            System.out.println("Spieler " + Player + ". Sie sind dran!");
         }
     }
 
@@ -96,5 +106,18 @@ public class Main {
         System.out.println("|"+board[0]+"|"+board[1]+"|"+board[2]+"|");
         System.out.println("|"+board[3]+"|"+board[4]+"|"+board[5]+"|");
         System.out.println("|"+board[6]+"|"+board[7]+"|"+board[8]+"|");
+    }
+
+    // Methode - Spielende
+    public static boolean endGame (int Spieler ) {
+        System.out.println("Spieler " + Spieler + ". Sie haben Gewonnen!");
+        System.out.println("________________________________--------------");
+        System.out.println("Eine neue Runde beginnen? Y - for Yes / N - No");
+        Scanner sc1 = new Scanner(System.in);
+        String Eingabe = sc1.nextLine();
+        if (Eingabe.equals("n") || Eingabe.equals("N")) {
+            System.out.println("Dann eben nicht...... ");
+             return false;}
+        else {return true;}
     }
 }
